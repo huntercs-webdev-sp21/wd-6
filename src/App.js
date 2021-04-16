@@ -57,6 +57,12 @@ function App() {
   return (
     <div className="container">
       <h1 className="header">Secrets Locker</h1>
+      <p className="description">
+        This is a shared secrets locker.
+        Anyone else can come to this page and access a secret given the secret name.
+        Only you can edit your secrets as long as you are on this page.
+        Secrets remain unless you delete them manually.
+      </p>
       {/* read */}
       <h2 className="header">Get data:</h2>
 

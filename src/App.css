@@ -18,3 +18,8 @@
   width: 200px;
   padding: 10px;
 }
+
+.description {
+  text-align: center;
+  max-width: 400px;
+}
