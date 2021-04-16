@@ -11,6 +11,13 @@ function App() {
   const [body, setBody] = useState('');
   const [secretIndex, setSecretIndex] = useState(-1);
   const [secrets, setSecrets] = useState([]);
+  const [search, setSearch] = useState('');
+  const [result, setResult] = useState([]);
+
+  const getAllSecrets = () => {
+    axios.get('https://getpantry.cloud/apiv1/pantry/ecf03d36-db58-4d1f-b2d2-be3de4515084')
+      .then((data) => console.log(data));
+  }
 
   const createSecret = () => {
     // four random chars as name
@@ -68,6 +75,22 @@ function App() {
     setBody('');
   }
 
+  const onSearch = () => {
+    //getAllSecrets();
+    axios.get(BASE_URL + search)
+      .then((data) =>{
+        console.log(data);
+        setResult(data.data);
+        console.log(result);
+        console.log(result.name);
+        console.log(result.body);
+      })
+      .catch( () => {
+        console.log("No Results!");
+        setResult([]);
+      });
+  }
+
   return (
     <div className="container">
       <h1 className="header">Secrets Locker</h1>
@@ -79,7 +102,16 @@ function App() {
       </p>
       {/* read */}
       <h2 className="header">Get data:</h2>
-
+      <textarea placeholder="Name" value={search} onChange={e => setSearch(e.target.value)} />
+      <button onClick={onSearch}>Search</button>
+      {result.length === 0
+       ? "No Results"
+       :
+       <div className="secret container">
+         <h4>{result.name}</h4>
+         <p>{result.body}</p>
+       </div>
+      }
       {/* create/update/delete */}
       <h2 className="header">Manage data:</h2>
       <h3 className="header">
