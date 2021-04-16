@@ -1,7 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
 
-const BASE_URL = 'https://getpantry.cloud/apiv1/pantry/ecf03d36-db58-4d1f-b2d2-be3de4515084/';
+// API documentation: https://documenter.getpostman.com/view/3281832/SzmZeMLC
+const BASE_URL = 'https://getpantry.cloud/apiv1/pantry/ecf03d36-db58-4d1f-b2d2-be3de4515084/basket/';
 
 function App() {
   return (
