@@ -9,33 +9,33 @@ const randomChar = () => String.fromCharCode(Math.floor(97 + Math.random() * 26)
 
 function App() {
   const [body, setBody] = useState('');
-  const [basketIndex, setBasketIndex] = useState(-1);
-  const [baskets, setBaskets] = useState([]);
+  const [secretIndex, setSecretIndex] = useState(-1);
+  const [secrets, setSecrets] = useState([]);
 
-  const createBasket = () => {
+  const createSecret = () => {
     // four random chars as name
-    const basketName = randomChar() + randomChar() + randomChar() + randomChar();
-    const basket = { name: basketName, body: body };
-    axios.post(BASE_URL + basketName, basket)
-      .then(() => setBaskets([...baskets, basket]))
+    const secretName = randomChar() + randomChar() + randomChar() + randomChar();
+    const secret = { name: secretName, body: body };
+    axios.post(BASE_URL + secretName, secret)
+      .then(() => setSecrets([...secrets, secret]))
       .catch(() => console.log('create failure'));
   }
 
-  const updateBasket = () => {
-    const basket = {name: baskets[basketIndex].name, body: body};
-    axios.put(BASE_URL + baskets[basketIndex].name, basket)
+  const updateSecret = () => {
+    const secret = {name: secrets[secretIndex].name, body: body};
+    axios.put(BASE_URL + secrets[secretIndex].name, secret)
       .then(() => {
-        baskets[basketIndex].body = body;
-        setBaskets([...baskets]);
+        secrets[secretIndex].body = body;
+        setSecrets([...secrets]);
       })
       .catch(() => console.log('edit failure'));
   }
 
   const onSave = () => {
-    if (basketIndex < 0) {
-      createBasket();
+    if (secretIndex < 0) {
+      createSecret();
     } else {
-      updateBasket();
+      updateSecret();
     }
   }
 
@@ -48,17 +48,17 @@ function App() {
       {/* create/update/delete */}
       <h2 className="header">Manage data:</h2>
       <h3 className="header">
-        {basketIndex < 0 ? 'Create New:' : `Edit basket '${baskets[basketIndex].name}':`}
+        {secretIndex < 0 ? 'Create New:' : `Edit secret '${secrets[secretIndex].name}':`}
       </h3>
       <textarea placeholder="Data" onChange={e => setBody(e.target.value)} />
       <button onClick={onSave}>Save</button>
 
       <h3 className="header">Update/Delete:</h3>
-      {baskets.map((basket, i) => (
-        <div key={basket.name} className="basket container">
-          <h4>{basket.name}</h4>
-          <p>{basket.body}</p>
-          <button onClick={() => setBasketIndex(i)}>Edit</button>
+      {secrets.map((secret, i) => (
+        <div key={secret.name} className="secret container">
+          <h4>{secret.name}</h4>
+          <p>{secret.body}</p>
+          <button onClick={() => setSecretIndex(i)}>Edit</button>
         </div>
       ))}
     </div>
