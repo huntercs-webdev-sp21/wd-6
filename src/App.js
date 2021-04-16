@@ -39,6 +39,16 @@ function App() {
     }
   }
 
+  const editSecret = index => () => {
+    setSecretIndex(index);
+    setBody(secrets[index].body);
+  }
+
+  const cancelEdit = () => {
+    setSecretIndex(-1);
+    setBody('');
+  }
+
   return (
     <div className="container">
       <h1 className="header">Secrets Locker</h1>
@@ -50,15 +60,16 @@ function App() {
       <h3 className="header">
         {secretIndex < 0 ? 'Create New:' : `Edit secret '${secrets[secretIndex].name}':`}
       </h3>
-      <textarea placeholder="Data" onChange={e => setBody(e.target.value)} />
+      <textarea placeholder="Data" value={body} onChange={e => setBody(e.target.value)} />
       <button onClick={onSave}>Save</button>
+      {secretIndex >= 0 && (<button onClick={cancelEdit}>Cancel edit</button>)}
 
       <h3 className="header">Update/Delete:</h3>
       {secrets.map((secret, i) => (
         <div key={secret.name} className="secret container">
           <h4>{secret.name}</h4>
           <p>{secret.body}</p>
-          <button onClick={() => setSecretIndex(i)}>Edit</button>
+          <button onClick={editSecret(i)}>Edit</button>
         </div>
       ))}
     </div>
