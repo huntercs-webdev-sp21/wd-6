@@ -9,12 +9,14 @@ const randomChar = () => String.fromCharCode(Math.floor(97 + Math.random()*26));
 
 function App() {
   const [body, setBody] = useState('');
+  const [baskets, setBaskets] = useState([]);
 
   const createBasket = () => {
     // four random chars as name
     const basketName = randomChar() + randomChar() + randomChar() + randomChar();
-    axios.post(BASE_URL + basketName, {data: body})
-      .then(() => console.log(`success: ${basketName}`))
+    const basket = {name: basketName, body: body};
+    axios.post(BASE_URL + basketName, basket.body)
+      .then(() => setBaskets([...baskets, basket]))
       .catch(() => console.log('failure'));
   }
 
@@ -29,6 +31,14 @@ function App() {
       <h3 className="header">Create New:</h3>
       <textarea placeholder="Data" onChange={e => setBody(e.target.value)} />
       <button onClick={createBasket}>Create</button>
+
+      <h3 className="header">Update/Delete:</h3>
+      {baskets.map(basket => (
+        <div className="basket container">
+          <h4>{basket.name}</h4>
+          <p>{basket.body}</p>
+        </div>
+      ))}
     </div>
   );
 }
