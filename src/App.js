@@ -1,10 +1,23 @@
-import logo from './logo.svg';
+import axios from 'axios';
+import { useState } from 'react';
 import './App.css';
 
 // API documentation: https://documenter.getpostman.com/view/3281832/SzmZeMLC
 const BASE_URL = 'https://getpantry.cloud/apiv1/pantry/ecf03d36-db58-4d1f-b2d2-be3de4515084/basket/';
 
+const randomChar = () => String.fromCharCode(Math.floor(97 + Math.random()*26));
+
 function App() {
+  const [body, setBody] = useState('');
+
+  const createBasket = () => {
+    // four random chars as name
+    const basketName = randomChar() + randomChar() + randomChar() + randomChar();
+    axios.post(BASE_URL + basketName, {data: body})
+      .then(() => console.log(`success: ${basketName}`))
+      .catch(() => console.log('failure'));
+  }
+
   return (
     <div className="container">
       <h1 className="header">Secrets Locker</h1>
@@ -13,6 +26,9 @@ function App() {
 
       {/* create/update/delete */}
       <h2 className="header">Manage data:</h2>
+      <h3 className="header">Create New:</h3>
+      <textarea placeholder="Data" onChange={e => setBody(e.target.value)} />
+      <button onClick={createBasket}>Create</button>
     </div>
   );
 }
