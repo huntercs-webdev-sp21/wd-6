@@ -17,7 +17,10 @@ function App() {
     const secretName = randomChar() + randomChar() + randomChar() + randomChar();
     const secret = { name: secretName, body: body };
     axios.post(BASE_URL + secretName, secret)
-      .then(() => setSecrets([...secrets, secret]))
+      .then(() => {
+        setSecrets([...secrets, secret]);
+        setBody('');
+      })
       .catch(() => console.log('create failure'));
   }
 
@@ -27,6 +30,8 @@ function App() {
       .then(() => {
         secrets[secretIndex].body = body;
         setSecrets([...secrets]);
+        setSecretIndex(-1);
+        setBody('');
       })
       .catch(() => console.log('edit failure'));
   }
