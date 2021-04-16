@@ -36,6 +36,21 @@ function App() {
       .catch(() => console.log('edit failure'));
   }
 
+  const deleteSecret  = index  => () =>  {
+    axios.delete(BASE_URL + secrets[index].name)
+      .then(() =>{
+        let tmp = [];
+        for(let i = 0; i < secrets.length; i++){
+          if(i !== index){tmp.push(secrets[i]);}
+        }
+        setSecrets(tmp);
+        setSecretIndex(-1);
+        setBody('');
+      })
+      .catch((e) => console.log(e));
+  }
+
+
   const onSave = () => {
     if (secretIndex < 0) {
       createSecret();
@@ -46,7 +61,6 @@ function App() {
 
   const editSecret = index => () => {
     setSecretIndex(index);
-    setBody(secrets[index].body);
   }
 
   const cancelEdit = () => {
@@ -76,13 +90,16 @@ function App() {
       {secretIndex >= 0 && (<button onClick={cancelEdit}>Cancel edit</button>)}
 
       <h3 className="header">Update/Delete:</h3>
-      {secrets.map((secret, i) => (
-        <div key={secret.name} className="secret container">
-          <h4>{secret.name}</h4>
-          <p>{secret.body}</p>
-          <button onClick={editSecret(i)}>Edit</button>
-        </div>
-      ))}
+      {
+        secrets.map((secret, i) => (
+          <div key={secret.name} className="secret container">
+            <h4>{secret.name}</h4>
+            <p>{secret.body}</p>
+            <button onClick={editSecret(i)}>Edit</button>
+            <button onClick={deleteSecret(i)}>Delete</button>
+          </div>
+        ))
+      }
     </div>
   );
 }
